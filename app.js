@@ -11,12 +11,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // Connect to MongoDB Atlas
-const MONGO_USERNAME = process.env.MONGO_USERNAME || "";
-const MONGO_PASSWORD = process.env.MONGO_PASSWORD || "";
-const MONGO_URL = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.j4r18xi.mongodb.net/userDB`;
+const MONGO_URI = process.env.MONGO_HOST || "";
 
 mongoose
-  .connect(MONGO_URL, { retryWrites: true, w: "majority" })
+  .connect(MONGO_URI, { retryWrites: true, w: "majority" })
   .then(() => {
     console.log("MongoDB Atlas connected");
   })
@@ -76,7 +74,6 @@ app
   .get((req, res) => {
     res.render("register");
   })
-  //   Test admin account: admin888@gmail.com, password: 88888888
   .post((req, res) => {
     const newUser = new User({
       email: req.body.username,
